@@ -1,0 +1,15 @@
+---
+# vars file for nexpose
+nexpose_product_key: W08X-Y7XP-6HEV-CF4J
+nexpose_download_url: https://download2.rapid7.com/download/InsightVM/
+nexpose_filename: Rapid7Setup-Linux64.bin
+
+# Nexpose SSL cert info:
+first_name: zach
+last_name: thompson
+company: roothunterllc
+
+# Nexpose auth info
+user: jhax
+password: test1234
+require_reset: "n"

@@ -1,0 +1,43 @@
+---
+# tasks file for nexpose
+
+- name: Check for Nexpose Installer
+  shell: |
+    if [ -f /usr/src/nexpose/Rapid7Setup-Linux64.bin ];then
+      echo "present"
+    else
+      mkdir -p /usr/src/nexpose
+      echo "absent"
+    fi
+  register: installer_present
+  changed_when: "installer_present.stdout == 'absent'"
+
+- name: Download Nexpose 64-Bit Package
+  get_url:
+    url: "{{ nexpose_download_url + nexpose_filename }}"
+    dest: /usr/src/nexpose/
+    mode: 0755
+  when: installer_present.changed
+  register: nexpose_out
+
+- name: Install Nexpose
+  become: true
+  ansible.builtin.expect:
+    command: /usr/src/nexpose/Rapid7Setup-Linux64.bin
+    responses:
+      (?i)Do you want to continue: "y"
+      (?i)Select only the set of components you want to install: "1"
+      (?i)Where should Rapid7 Vulnerability Management be installed?: ""
+      (?i)The installation can continue, but insufficient drive space will impact the long-term operation of software as your stored data increases.: "c"
+      (?i)Minimum requirements met. Select "Yes" to continue, "No" to cancel installation.: "y"
+      (?i)Enter the number for the port that the database will listen on: "5432"
+      (?i)First name: "{{ first_name }}"
+      (?i)Last name: "{{ last_name }}"
+      (?i)Company: "{{ company }}"
+      (?i)User name: "{{ user }}"
+      (?i)Password: "{{ password }}"
+      (?i)Confirm the password: "{{ password }}"
+      (?i)Require password reset upon login: "{{ require_reset }}"
+      (?i)It is strongly recommended that you choose a password which contains characters from at least three of the following categories: "i"
+      (?i)Select any additional installation tasks. Initialize and start after installation: "y"
+      (?i)Continue: "c"

@@ -1,0 +1,6 @@
+---
+# vars file for nexpose
+# Put your product key here
+nexpose_product_key: XXXX-XXXX-XXXX-XXXX
+nexpose_download_url: https://download2.rapid7.com/download/InsightVM/
+nexpose_filename: Rapid7Setup-Linux64.bin
